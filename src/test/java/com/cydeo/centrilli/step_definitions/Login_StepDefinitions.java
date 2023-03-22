@@ -32,4 +32,7 @@ public class Login_StepDefinitions {
     public void posmanager_can_login_the_centrilli_homepage() {
         Assert.assertTrue(Driver.getDriver().getTitle().equals("Odoo"));
     }
+
+
+
 }

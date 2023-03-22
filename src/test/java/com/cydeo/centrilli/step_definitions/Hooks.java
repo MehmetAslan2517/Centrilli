@@ -8,6 +8,7 @@ import org.openqa.selenium.TakesScreenshot;
 
 public class Hooks {
 
+
     //import from cucumber @After not junit @After
     @After
     public void teardownScenario(Scenario scenario){

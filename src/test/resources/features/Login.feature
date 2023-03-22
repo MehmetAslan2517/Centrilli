@@ -1,3 +1,4 @@
+
 Feature: Centrilli login feature
   User Story: As a user, I should be able to login with correct credentials to different
   accounts. And dashboard should be displayed.
@@ -11,4 +12,6 @@ Feature: Centrilli login feature
     And posmanager enters "posmanager" into inputPassword
     And posmanager click the loginbutton
     Then posmanager can login the centrilli homepage
+
+
 

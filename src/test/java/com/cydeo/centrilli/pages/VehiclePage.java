@@ -17,6 +17,12 @@ public class VehiclePage extends BasePage{
     @FindBy(xpath = "//button[@accesskey='c']")
     public WebElement createButton;
 
+    @FindBy(xpath = "(//span[@class='o_dropdown_button'])[1]")
+    public WebElement inputModelTriangle;
+
+    @FindBy(xpath = "(//a[.='Acura/'])[1]")
+    public WebElement AcuraModel;
+
     @FindBy(xpath = "(//input[@class='o_input ui-autocomplete-input'])[1]")
     public WebElement inputModel;
 
@@ -44,8 +50,18 @@ public class VehiclePage extends BasePage{
     @FindBy(xpath = "//span[@class='o_pager_limit']")
     public WebElement numberOfVehicles;
 
+    @FindBy(xpath = "(//li[@class='active'])[3]")
+    public WebElement titleVehicle;
 
-/*
+    @FindBy(xpath = "(//input[@class='o_input ui-autocomplete-input'])[5]")
+    public WebElement inputCreateModelMakeBox;
+
+    @FindBy(xpath = "(//span[@draggable='false'])[5]")
+    public WebElement createModelMakeTriangle; //create model kutusundaki Maeke boxının üçgeni
+
+    @FindBy(xpath = "//button[@class='btn btn-sm btn-primary']")
+    public WebElement saveButtonCreateModel;
+    /*
     @FindBy()
     public WebElement y;
 */
