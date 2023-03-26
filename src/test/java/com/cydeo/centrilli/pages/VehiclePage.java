@@ -13,7 +13,8 @@ public class VehiclePage extends BasePage{
 
     @FindBy(xpath = "(//span[@class='oe_menu_text'])[116]")
     public WebElement vehicleButton;
-
+    @FindBy(xpath = "//button[@class='btn btn-sm btn-default o_button_import']")
+    public WebElement importButton;
     @FindBy(xpath = "//button[@accesskey='c']")
     public WebElement createButton;
 
@@ -41,10 +42,10 @@ public class VehiclePage extends BasePage{
     @FindBy(xpath = "(//div[@class='o_thread_message_content'])[1]")
     public WebElement newVehicleMessage;
 
-    @FindBy(xpath = "//div[@class='o_searchview']")
+    @FindBy(xpath = "//input[@class='o_searchview_input']")
     public WebElement searchBox;
 
-    @FindBy(xpath = "//span[.='MA2517']")
+    @FindBy(xpath = "(//span[.='MA2517'])[1]")
     public WebElement newVehicle;
 
     @FindBy(xpath = "//span[@class='o_pager_limit']")
