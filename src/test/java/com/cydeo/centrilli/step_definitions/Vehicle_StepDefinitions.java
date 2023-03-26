@@ -3,6 +3,7 @@ package com.cydeo.centrilli.step_definitions;
 import com.cydeo.centrilli.pages.BasePage;
 import com.cydeo.centrilli.pages.LoginPage;
 import com.cydeo.centrilli.pages.VehiclePage;
+import com.cydeo.centrilli.utilities.BrowserUtil;
 import com.cydeo.centrilli.utilities.ConfigurationReader;
 import com.cydeo.centrilli.utilities.Driver;
 import com.github.javafaker.Faker;
@@ -11,8 +12,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class Vehicle_StepDefinitions {
 
@@ -28,6 +27,7 @@ public class Vehicle_StepDefinitions {
         String username = ConfigurationReader.getProperty("username");
         String password = ConfigurationReader.getProperty("password");
         loginpage.login(username, password);
+        BrowserUtil.sleep(5);
     }
 
     @When("posmanager clicks the fleet dropdown")
@@ -37,98 +37,114 @@ public class Vehicle_StepDefinitions {
 
     @When("posmanager clicks the create button")
     public void posmanager_clicks_the_create_button() throws InterruptedException {
-        //WebDriverWait wait = new WebDriverWait(Driver.getDriver(),25);
-        //wait.until(ExpectedConditions.elementToBeClickable(vehiclePage.createButton));
-        Thread.sleep(15000);
+        BrowserUtil.waitForClickAbility(vehiclePage.createButton, 15);
         vehiclePage.createButton.click();
     }
 
     @When("posmanager enters the model")
-    public void posmanager_enters_the_model() throws InterruptedException {
-       // WebDriverWait wait = new WebDriverWait(Driver.getDriver(),90);
-       // wait.until(ExpectedConditions.visibilityOf(vehiclePage.inputModel));
-        Thread.sleep(30000);
-        vehiclePage.inputModelTriangle.click();
+    public void posmanager_enters_the_model() {
+        BrowserUtil.waitForVisibility(vehiclePage.inputModel, 15);
+        vehiclePage.inputModel.click();
         vehiclePage.AcuraModel.click();
     }
 
     @When("posmanager enters License Plate")
-    public void posmanager_enters_license_plate() throws InterruptedException {
-        //vehiclePage.inputLicencePlate.sendKeys(faker.bothify("MA###"));
-       // WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-        //wait.until(ExpectedConditions.visibilityOf(vehiclePage.inputLicencePlate));
-        Thread.sleep(30000);
+    public void posmanager_enters_license_plate()  {
+        BrowserUtil.waitForVisibility(vehiclePage.inputLicencePlate, 15);
         vehiclePage.inputLicencePlate.sendKeys("MA2517");
     }
 
     @When("posmanager clicks the save button")
     public void posmanager_clicks_the_save_button() {
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-        wait.until(ExpectedConditions.elementToBeClickable(vehiclePage.saveButton));
+        BrowserUtil.waitForClickAbility(vehiclePage.saveButton,15);
         vehiclePage.saveButton.click();
     }
 
     @Then("posmanager can create new vehicle")
     public void posmanager_can_create_new_vehicle() {
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-        wait.until(ExpectedConditions.elementToBeClickable(vehiclePage.editButton));
-        String actualTitle = Driver.getDriver().getTitle();
-        String expectedTitle = "Acura/ /MA2517 - Odoo";
-        Assert.assertEquals(expectedTitle,actualTitle);
+        BrowserUtil.waitForClickAbility(vehiclePage.editButton,15);
+        String actualTitle = vehiclePage.titleVehicle.getText();
+        String expectedTitle = "Acura/ /MA2517";
+        Assert.assertEquals(expectedTitle, actualTitle);
     }
 
     @Then("posmanager can not create vehicle")
     public void posmanager_can_not_create_vehicle() {
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-        wait.until(ExpectedConditions.elementToBeClickable(vehiclePage.editButton));
         String actualTitle = vehiclePage.titleVehicle.getText();
         String expectedTitle = "Acura/ /MA2517 - Odoo";
-        Assert.assertFalse(expectedTitle.equals(actualTitle));
+        Assert.assertNotEquals(expectedTitle, actualTitle);
     }
 
     @When("posmanager clicks the discard button to cancel the process")
     public void posmanager_clicks_the_discard_button_to_cancel_the_process() {
-        WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-        wait.until(ExpectedConditions.elementToBeClickable(vehiclePage.discardButton));
+        BrowserUtil.waitForClickAbility(vehiclePage.discardButton,15);
         vehiclePage.discardButton.click();
     }
 
     @Then("posmanager should be able to cancel the process")
     public void posmanager_should_be_able_to_cancel_the_process() {
-        String actualTitle = Driver.getDriver().getTitle();
-        String expectedTitle = "Vehicles - Odoo";
-        Assert.assertTrue(expectedTitle.equals(actualTitle));
+        BrowserUtil.waitForVisibility(vehiclePage.createButton,15);
+        BrowserUtil.verifyTitle("Vehicles - Odoo");
     }
 
     @Then("posmanager can create new vehicle and can see the page title is changed to the new vehicle name")
     public void posmanager_can_create_new_vehicle_and_can_see_the_page_title_is_changed_to_the_new_vehicle_name() {
-        String actualTitle = Driver.getDriver().getTitle();
-        String expectedTitle = "Toyota/ /MA2517 - Odoo";
-        Assert.assertEquals(expectedTitle,actualTitle);
+        BrowserUtil.waitForClickAbility(vehiclePage.editButton,15);
+        BrowserUtil.verifyTitle("Acura/ /MA2517 - Odoo");
     }
 
-    @Then("posmanager should see (Vehicle name) has been added to the fleet! message is displayed at the bottom of the page")
-    public void posmanager_should_see_message_is_displayed_at_the_bottom_of_the_page(String string) {
-       // WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-       // wait.until(ExpectedConditions.visibilityOfElementLocated(vehiclePage.newVehicleMessage));
-        vehiclePage.newVehicleMessage.isDisplayed();
+    @Then("posmanager should see \\(Vehicle name) has been added to the fleet! message is displayed at the bottom of the page")
+    public void posmanager_should_see_vehicle_name_has_been_added_to_the_fleet_message_is_displayed_at_the_bottom_of_the_page() {
+        BrowserUtil.waitForVisibility(vehiclePage.newVehicleMessage,15);
+        Assert.assertTrue(vehiclePage.newVehicleMessage.isDisplayed());
+    }
+
+    @When("posmanager clicks vehicles button")
+    public void posmanager_clicks_vehicles_button() {
+        vehiclePage.vehicleButton.click();
     }
 
     @Then("posmanager search the new created vehicle on the search box and find it")
     public void posmanager_search_the_new_created_vehicle_on_the_search_box_and_find_it() {
         vehiclePage.vehicleButton.click();
-        vehiclePage.searchBox.sendKeys("MA2157"+ Keys.ENTER);
+        BrowserUtil.waitForClickAbility(vehiclePage.searchBox, 15);
+        vehiclePage.searchBox.sendKeys("MA2517" + Keys.ENTER);
+        BrowserUtil.waitForVisibility(vehiclePage.newVehicle,15);
         vehiclePage.newVehicle.isDisplayed();
     }
 
-    @Then("posmanager clicks the save button, sees that number of vehicle increase one")
-    public void posmanager_clicks_the_save_button_sees_that_number_of_vehicle_increase_one() {
-       // WebDriverWait wait = new WebDriverWait(Driver.getDriver(),15);
-       // wait.until(ExpectedConditions.visibilityOfElementLocated(vehiclePage.numberOfVehicles));
+    @Then("posmanager creates new vehicle, sees that number of vehicle increase one")
+    public void posmanager_creates_new_vehicle_sees_that_number_of_vehicle_increase_one() {
+
+        BrowserUtil.waitForVisibility(vehiclePage.numberOfVehicles,15);
         String numOfVehicles = vehiclePage.numberOfVehicles.getText();
-        System.out.println(numOfVehicles);
-       // Integer num = (Integer) numOfVehicles;
+
+        int num1 = Integer.parseInt(numOfVehicles);
+        num1=num1+1;
+
+        BrowserUtil.waitForClickAbility(vehiclePage.createButton, 15);
+        vehiclePage.createButton.click();
+
+        BrowserUtil.waitForVisibility(vehiclePage.inputModel, 15);
+        vehiclePage.inputModel.click();
+        vehiclePage.AcuraModel.click();
+
+        BrowserUtil.waitForVisibility(vehiclePage.inputLicencePlate, 15);
+        vehiclePage.inputLicencePlate.sendKeys("MA2517");
+        vehiclePage.vehicleButton.click();
+
+        BrowserUtil.waitForClickAbility(vehiclePage.saveButton,15);
+        vehiclePage.saveButton.click();
+        vehiclePage.vehicleButton.click();
+
+        BrowserUtil.waitForVisibility(vehiclePage.importButton,15);
+        String numOfVehiclesAfterSaving = vehiclePage.numberOfVehicles.getText();
+
+        int num2 = Integer.parseInt(numOfVehiclesAfterSaving);
+
+        Assert.assertEquals(num2, num1);
     }
+
 
 
 }
